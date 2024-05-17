@@ -5,6 +5,54 @@ Initial development for `EK-TM4C1294NCPDT` board.
 ![Tiva C img2](/assets/images/tiva_img2.jpg)
 ![Tiva C img3](/assets/images/tiva_img3.jpg)
 
+## Configuration
+
+Configuring Visual Studio with [PlatformIO Extension](https://platformio.org/install/ide?install=vscode). Remember to set the `platform.ini` file with:
+
+```
+[env:lptm4c1294ncpdt]
+platform = titiva
+board = lptm4c1294ncpdt
+framework = arduino
+board_build.mcu = lptm4c1294ncpdt
+board_build.f_cpu = 120000000L
+debug_tool = ti-icdi
+upload_protocol = ti-icdi
+upload_command = C:/openocd/bin/openocd.exe -f C:/openocd/share/openocd/scripts/board/ti_ek-tm4c1294xl.cfg -c "program .pio/build/lptm4c1294ncpdt/firmware.elf verify exit"
+```
+
+For Linux you might need to run this command
+```
+sudo apt-get install python3-venv
+```
+
+I had problems with openocd so I have downloaded it [here](https://github.com/openocd-org/openocd/releases/tag/v0.12.0) and added as an `upload_command` in the `platform.ini` file and also the path for the `ti_ek-tm4c1294xl.cfg` file.
+
+When you upload the files this errors are going to show but the software is going to be sucessfully uploaded so don't worry
+
+```
+Open On-Chip Debugger 0.12.0 (2023-01-14-23:37)
+Licensed under GNU GPL v2
+For bug reports, read
+        http://openocd.org/doc/doxygen/bugs.html
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+Info : clock speed 4211803 kHz
+Info : ICDI Firmware version: 1224
+Error: SRST error
+Info : [tm4c1294ncpdt.cpu] Cortex-M4 r0p1 processor detected
+Info : [tm4c1294ncpdt.cpu] target has 6 breakpoints, 4 watchpoints
+Info : starting gdb server for tm4c1294ncpdt.cpu on 3333
+Info : Listening on port 3333 for gdb connections
+Error: SRST error
+[tm4c1294ncpdt.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x000002a4 msp: 0x20040000
+** Programming Started **
+** Programming Finished **
+** Verify Started **
+** Verified OK **
+shutdown command invoked
+```
+
 ## Pin Reference from pins_energia.h
 
 ```
@@ -428,7 +476,12 @@ static const uint8_t PB_1 = 95; // unrouted
 #ifdef ARDUINO_MAIN
 ```
 
-## Blink
+---
+## Examples
+
+You can check this [repo](https://github.com/platformio/platform-titiva) out for some examples. [This one](https://github.com/Swepz/platforimIO-Tiva) is also very helpful.
+
+### Blink
 
 ```
 #include <Arduino.h>
